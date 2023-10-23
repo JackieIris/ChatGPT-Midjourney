@@ -7,9 +7,17 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]  # 指定要使用的 Node.js 版本
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
 
       - name: Set up Git
         run: |
@@ -18,7 +26,7 @@ jobs:
 
       - name: Sync with Upstream
         run: |
-          git remote add upstream https://github.com/zhile-io/pandora-cloud-serverless.git
+          git remote add upstream https://github.com/Licoy/ChatGPT-Midjourney.git
           git fetch upstream
           git checkout main  # 切换到你的主分支
           git merge upstream/main --no-edit
