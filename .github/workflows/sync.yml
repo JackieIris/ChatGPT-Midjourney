@@ -1,0 +1,25 @@
+name: Sync Fork with Upstream
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # 每天午夜同步一次
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config user.name "JackieIris"
+          git config user.email "liurain0312@gmail.com"
+
+      - name: Sync with Upstream
+        run: |
+          git remote add upstream https://github.com/zhile-io/pandora-cloud-serverless.git
+          git fetch upstream
+          git checkout main  # 切换到你的主分支
+          git merge upstream/main --no-edit
+          git push origin main
